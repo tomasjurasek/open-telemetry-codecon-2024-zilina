@@ -1,9 +1,6 @@
-using Microsoft.Extensions.Caching.Distributed;
 using OpenTelemetry.Demo.ServiceDefaults.Models;
 using MassTransit;
 using OpenTelemetry.Demo.API.Database;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +8,8 @@ builder.AddServiceDefaults();
 
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IRequestStorage, RequestStorage>();
+
+builder.Services.AddHttpLogging( _ => { });
 
 builder.Services.AddMassTransit(x =>
 {
@@ -35,7 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+app.UseHttpLogging();
 
 app.MapPost("/requests", async (IBus bus, IRequestStorage storage, CreateRequestCommand command) =>
 {

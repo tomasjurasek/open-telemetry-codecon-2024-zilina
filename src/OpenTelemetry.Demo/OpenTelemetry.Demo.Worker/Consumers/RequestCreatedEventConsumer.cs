@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry.Demo.ServiceDefaults.Clients;
 using OpenTelemetry.Demo.ServiceDefaults.Models;
 
@@ -15,7 +16,7 @@ public class RequestCreatedEventConsumer(ApiClient apiClient) : IConsumer<Reques
 
     private async Task ChangeStatusAsync(RequestCreatedEvent message)
     {
-        var activity = ActivitySourceProvider.ActivitySource.StartActivity(nameof(ChangeStatusAsync));
+        using var activity = ActivitySourceProvider.ActivitySource.StartActivity(nameof(ChangeStatusAsync));
         if(message.Description.Contains("PLEASE"))
         {
             await apiClient.ChangeStatusAsync(message.Id, "Approved");
