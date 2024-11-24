@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/open-telemetry-codecon-2024-zilina/FileContentIndex
+/.vs/open-telemetry-codecon-2024-zilina/v17/.wsuo
+/.vs/open-telemetry-codecon-2024-zilina/v17/DocumentLayout.backup.json
+/.vs/open-telemetry-codecon-2024-zilina/v17/DocumentLayout.json
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json

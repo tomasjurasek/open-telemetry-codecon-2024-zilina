@@ -1,0 +1,52 @@
+﻿@page "/"
+
+@using OpenTelemetry.Demo.ServiceDefaults.Models
+
+@inject OpenTelemetry.Demo.ServiceDefaults.Clients.ApiClient ApiClient
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello</h1>
+
+
+@if (requests == null)
+{
+    <p><em>Loading</em></p>
+}
+else if (requests.Count == 0)
+{
+    <p><em>Empty</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Created At</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in requests)
+            {
+                <tr>
+                    <td>@forecast.CreatedAt.ToShortDateString()</td>
+                    <td>@forecast.Name</td>
+                    <td>@forecast.Description</td>
+                    <td>@forecast.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyCollection<RequestDTO>? requests;
+
+    protected override async Task OnInitializedAsync()
+    {
+        requests = await ApiClient.GetRequestsAsync();
+    }
+}
