@@ -30,6 +30,7 @@ namespace OpenTelemetry.Demo.API.Database
         public async Task<RequestDTO> GetAsync(Guid id)
         {
             using var activity = ActivitySourceProvider.ActivitySource.StartActivity(nameof(GetAsync));
+            activity?.SetTag("request.id", id);
             return _storage[id];
         }
 

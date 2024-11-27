@@ -1,7 +1,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var messaging = builder.AddRabbitMQ("messaging")
-    .WithManagementPlugin();
+    .WithManagementPlugin()
+    .WithDataVolume();
 
 var api = builder.AddProject<Projects.OpenTelemetry_Demo_API>("api")
     .WithReference(messaging)

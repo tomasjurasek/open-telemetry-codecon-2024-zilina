@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.Logging;
 using OpenTelemetry.Demo.ServiceDefaults.Clients;
 using OpenTelemetry.Demo.ServiceDefaults.Models;
 
@@ -9,9 +8,13 @@ public class RequestCreatedEventConsumer(ApiClient apiClient) : IConsumer<Reques
 {
     public async Task Consume(ConsumeContext<RequestCreatedEvent> context)
     {
-        // Load something
-        await Task.Delay(Random.Shared.Next(1000, 3000));
+        await SomeLogic();
         await ChangeStatusAsync(context.Message);
+    }
+
+    private static async Task SomeLogic()
+    {
+        await Task.Delay(Random.Shared.Next(1000, 3000));
     }
 
     private async Task ChangeStatusAsync(RequestCreatedEvent message)
@@ -19,6 +22,7 @@ public class RequestCreatedEventConsumer(ApiClient apiClient) : IConsumer<Reques
         using var activity = ActivitySourceProvider.ActivitySource.StartActivity(nameof(ChangeStatusAsync));
         if(message.Description.Contains("PLEASE"))
         {
+
             await apiClient.ChangeStatusAsync(message.Id, "Approved");
         }
         else
