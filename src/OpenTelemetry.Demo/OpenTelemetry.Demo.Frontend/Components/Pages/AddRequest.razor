@@ -1,0 +1,40 @@
+﻿@page "/request"
+
+@using OpenTelemetry.Demo.ServiceDefaults.Models
+
+@inject OpenTelemetry.Demo.ServiceDefaults.Clients.ApiClient ApiClient
+
+<PageTitle>Add Request</PageTitle>
+
+@if (RequestAccepted)
+{
+    <p>Request Accepted</p>
+}
+else
+{
+    <EditForm Model="Command" OnSubmit="Submit" FormName="AddRequest">
+        <label>
+            Name:
+            <InputText @bind-Value="Command!.Name" />
+        </label>
+        <label>
+            Description:
+            <InputText @bind-Value="Command!.Description" />
+        </label>
+        <button type="submit">Submit</button>
+    </EditForm>
+}
+@code {
+    private CreateRequestCommand Command { get; set; }
+
+    private bool RequestAccepted = false;
+
+    protected override async Task OnInitializedAsync() => Command ??= new();
+
+    public async Task Submit()
+    {
+        await ApiClient.CreateRequestAsync(Command);
+        RequestAccepted = true;
+    }
+
+}
